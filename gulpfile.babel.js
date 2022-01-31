@@ -4,17 +4,25 @@ import del from "del";
 import ws from "gulp-webserver";
 // import image from "gulp-imagemin";
 // const imagemin = import('gulp-imagemin')
+// import sass from "gulp-sass";// v5부터는 이렇게 하면 안됨.
 
-const routes = {    
+const sass = require("gulp-sass")(require("node-sass"));
+
+const routes = {
   pug: {
     watch: "src/**/*.pug",
     src: "src/*.pug",
     dest: "build",
   },
   img: {
-      src: "src/img/*",
-      dest: "build/img"
-  }
+    src: "src/img/*",
+    dest: "build/img",
+  },
+  scss: {
+    watch: "src/scss/**/*.scss",
+    src: "src/scss/style.scss",
+    dest: "build/css",
+  },
 };
 
 const pug = () =>
@@ -37,15 +45,25 @@ const webserver = () =>
     })
   );
 
-const watch = () => {
-    gulp.watch(routes.pug.watch, pug); // (감시 대상, 변경 시 작업)
-}
-
 // const img = () => gulp.src(routes.img.src).pipe(image()).pipe(gulp.dest(routes.img.dest));
+const copy = () => gulp.src(routes.img.src).pipe(gulp.dest(routes.img.dest));
 
-const prepare = gulp.series([clean, ]);  // img
+const styles = () =>
+  gulp
+    .src(routes.scss.src)
+    .pipe(sass().on("error", sass.logError))
+    .pipe(gulp.dest(routes.scss.dest));
 
-const assets = gulp.series([pug]);
+const watch = () => {
+  gulp.watch(routes.pug.watch, pug); // (감시 대상, 변경 시 작업)
+//   gulp.watch(routes.img.watch, img); // (감시 대상, 변경 시 작업)
+//   gulp.watch(routes.img.watch, copy); // (감시 대상, 변경 시 작업)
+  gulp.watch(routes.scss.watch, styles); // (감시 대상, 변경 시 작업)
+};
+
+const prepare = gulp.series([clean, copy]); // img
+
+const assets = gulp.series([pug, styles]);
 
 const postDev = gulp.parallel([webserver, watch]);
 

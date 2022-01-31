@@ -9,8 +9,6 @@
     "dev": "gulp dev",
     "build": "gulp build"
   },
-  "dependencies": {
-  },
   "devDependencies": {
     "@babel/core": "^7.16.12",
     "@babel/preset-env": "^7.16.11",
@@ -20,6 +18,8 @@
     "gulp-image": "^6.3.1",
     "gulp-imagemin": "^8.0.0",
     "gulp-pug": "^5.0.0",
-    "gulp-webserver": "^0.9.1"
+    "gulp-sass": "^5.1.0",
+    "gulp-webserver": "^0.9.1",
+    "node-sass": "^7.0.1"
   }
 }
