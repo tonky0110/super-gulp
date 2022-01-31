@@ -28,3 +28,6 @@ npm install -g windows-build-tools on Windows
 
 gulp-image 가 안되는 문제로 image파일의 압축이 불가(윈도우에서)
 단순히 src/img --> dest/img로 복사하도록 copy task를 만들어 처리.
+
+
+browserify: import 같은 문법을 브라우저에서 사용하기 위하여 추가

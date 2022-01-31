@@ -5,8 +5,10 @@ import ws from "gulp-webserver";
 // import image from "gulp-imagemin";
 // const imagemin = import('gulp-imagemin')
 // import sass from "gulp-sass";// v5부터는 이렇게 하면 안됨.
-import autoprefixer from 'gulp-autoprefixer';
-import miniCSS from 'gulp-csso';
+import autoprefixer from "gulp-autoprefixer";
+import miniCSS from "gulp-csso";
+import bro from "gulp-bro";
+import babelify from "babelify";
 
 const sass = require("gulp-sass")(require("node-sass"));
 
@@ -24,6 +26,11 @@ const routes = {
     watch: "src/scss/**/*.scss",
     src: "src/scss/style.scss",
     dest: "build/css",
+  },
+  js: {
+    watch: "src/js/**/*.js",
+    src: "src/js/main.js",
+    dest: "build/js",
   },
 };
 
@@ -58,16 +65,30 @@ const styles = () =>
     .pipe(miniCSS())
     .pipe(gulp.dest(routes.scss.dest));
 
+const js = () =>
+  gulp
+    .src(routes.js.src)
+    .pipe(
+      bro({
+        transform: [
+          babelify.configure({ presets: ["@babel/preset-env"] }),
+          ["uglifyify", { global: true }],
+        ],
+      })
+    )
+    .pipe(gulp.dest(routes.js.dest));
+
 const watch = () => {
   gulp.watch(routes.pug.watch, pug); // (감시 대상, 변경 시 작업)
-//   gulp.watch(routes.img.watch, img); // (감시 대상, 변경 시 작업)
-//   gulp.watch(routes.img.watch, copy); // (감시 대상, 변경 시 작업)
+  //   gulp.watch(routes.img.watch, img); // (감시 대상, 변경 시 작업)
+  //   gulp.watch(routes.img.watch, copy); // (감시 대상, 변경 시 작업)
   gulp.watch(routes.scss.watch, styles); // (감시 대상, 변경 시 작업)
+  gulp.watch(routes.js.watch, js); // (감시 대상, 변경 시 작업)
 };
 
 const prepare = gulp.series([clean, copy]); // img
 
-const assets = gulp.series([pug, styles]);
+const assets = gulp.series([pug, styles, js]);
 
 const postDev = gulp.parallel([webserver, watch]);
 
