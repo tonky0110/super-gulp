@@ -5,6 +5,8 @@ import ws from "gulp-webserver";
 // import image from "gulp-imagemin";
 // const imagemin = import('gulp-imagemin')
 // import sass from "gulp-sass";// v5부터는 이렇게 하면 안됨.
+import autoprefixer from 'gulp-autoprefixer';
+import miniCSS from 'gulp-csso';
 
 const sass = require("gulp-sass")(require("node-sass"));
 
@@ -52,6 +54,8 @@ const styles = () =>
   gulp
     .src(routes.scss.src)
     .pipe(sass().on("error", sass.logError))
+    .pipe(autoprefixer())
+    .pipe(miniCSS())
     .pipe(gulp.dest(routes.scss.dest));
 
 const watch = () => {
