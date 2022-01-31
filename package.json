@@ -9,15 +9,17 @@
     "dev": "gulp dev",
     "build": "gulp build"
   },
+  "dependencies": {
+  },
   "devDependencies": {
     "@babel/core": "^7.16.12",
     "@babel/preset-env": "^7.16.11",
     "@babel/register": "^7.16.9",
+    "del": "^6.0.0",
     "gulp": "^4.0.2",
+    "gulp-image": "^6.3.1",
+    "gulp-imagemin": "^8.0.0",
     "gulp-pug": "^5.0.0",
     "gulp-webserver": "^0.9.1"
-  },
-  "dependencies": {
-    "del": "^6.0.0"
   }
 }

@@ -2,6 +2,8 @@ import gulp from "gulp";
 import gpug from "gulp-pug";
 import del from "del";
 import ws from "gulp-webserver";
+// import image from "gulp-imagemin";
+// const imagemin = import('gulp-imagemin')
 
 const routes = {    
   pug: {
@@ -9,6 +11,10 @@ const routes = {
     src: "src/*.pug",
     dest: "build",
   },
+  img: {
+      src: "src/img/*",
+      dest: "build/img"
+  }
 };
 
 const pug = () =>
@@ -35,7 +41,9 @@ const watch = () => {
     gulp.watch(routes.pug.watch, pug); // (감시 대상, 변경 시 작업)
 }
 
-const prepare = gulp.series([clean]);
+// const img = () => gulp.src(routes.img.src).pipe(image()).pipe(gulp.dest(routes.img.dest));
+
+const prepare = gulp.series([clean, ]);  // img
 
 const assets = gulp.series([pug]);
 
